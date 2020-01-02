@@ -1,40 +1,67 @@
 #include <bits/stdc++.h>
-#include <math.h>
+#include <math.h> 
+#include <cmath>
+#include<algorithm> 
 
 using namespace std;
 
-int binary_to_decimal(int binary, int level);
-int decimal_to_binary(int decimal, int level);
+
+double binary_to_decimal(double binary,double level);
+double decimal_to_binary(double decimal, double level);
+double max_num_of_consecutive_ones(double binary,double consecutive);
 int main()
 {
-    int n = 0;
+    double n =0;
     cin >> n;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    int binary = decimal_to_binary(n, 0);
-    cout << "function ran!" << endl;
-    //cout<<binary;
+    double binary = decimal_to_binary(n,0);
+    cout<<"binary number: "<<binary<<". Max consecutive is: ";
+    cout<<max_num_of_consecutive_ones(binary,0);
 
     return 0;
 }
-int binary_to_decimal(int binary, int level)
+double binary_to_decimal(double binary,double level)
 {
-    if (binary / 10 > 0)
+    if (binary/10>0)
     {
-        return ((binary % 10) * pow(2, level) + binary_to_decimal(binary / 10, level + 1));
+        return( fmod(binary,10.0)*pow (2, level)+binary_to_decimal(floor(binary/10),level+1)  );
     }
     else
     {
-        return (binary)*pow(2, level);
+        return (binary)*pow (2, level);
     }
+    
 }
-int decimal_to_binary(int decimal, int level)
+double decimal_to_binary(double decimal, double level)
 {
     if (decimal >= 1)
     {
-        return decimal_to_binary(decimal / 2, level + 1) + decimal % 2 * pow(10, level);
+        return decimal_to_binary(floor(decimal/2), level+1)+fmod(decimal,2.0)*pow (10, level);
     }
     else
     {
         return 0;
+    }    
+}
+double max_num_of_consecutive_ones(double binary,double consecutive)
+{
+    if (binary>0)
+    {
+        if ( fmod(binary,10.0)==1 )
+        {   
+            return max_num_of_consecutive_ones(floor(binary/10),consecutive+1);
+        }
+        else
+        {
+            return max(consecutive,max_num_of_consecutive_ones(floor(binary/10),0) );
+            
+        }
     }
+    else
+    {
+        return consecutive;
+    }
+    
+
+
 }
